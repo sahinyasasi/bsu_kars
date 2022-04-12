@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link as RLink } from "react-router-dom";
 import { HideOn } from "react-hide-on-scroll";
 import { makeStyles, useTheme } from "@mui/styles";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   Grid,
@@ -16,12 +17,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PhoneIcon from "@mui/icons-material/Phone";
-import Link from "../Layouts/Link";
 import AppBarOffset from "../Layouts/AppbarOffset";
+import { userActions } from "../../actions";
 
 import MiniNavMenu from "./MiniNavMenu";
 import NavMenu from "./NavMenu";
-
+import Login from "../Account/Login";
+import Register from "../Account/Register";
 const useStyles = makeStyles((theme) => ({
   hideOn: {
     backgroundColor: theme.white.main,
@@ -54,11 +56,26 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const ismobile = useMediaQuery(theme.breakpoints.down("md"));
   const [openMenu, setOpenMenu] = React.useState(false);
-
+  const [openLogin, setOpenLogin] = React.useState(false);
+  const [openRegister, setOpenRegister] = React.useState(false);
+  const user = useSelector((state) => state.currentUser);
   const handleOpenNavMenu = () => {
     setOpenMenu(!openMenu);
+  };
+  const handleLoginClick = () => {
+    setOpenLogin(!openLogin);
+  };
+  const handleRegisterClick = () => {
+    setOpenRegister(!openRegister);
+  };
+  const handleLogout = () => {
+    console.log("222 -- Logout Logout");
+    if (user.loggedIn && user.user) {
+      dispatch(userActions.userLogout("/"));
+    }
   };
 
   const OuterLink = ({ to, children, ...props }) => {
@@ -98,15 +115,21 @@ const NavBar = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={6} className={classes.centerItem}>
-              <Typography variant="captionText">
-                <Link to="/login" underline="none">
-                  <span className={classes.loginOrregister}>Login</span>
-                </Link>{" "}
-                Or{" "}
-                <Link to="/signup" underline="none">
-                  <span className={classes.loginOrregister}>Register</span>
-                </Link>
-              </Typography>
+              {user.user ? (
+                <Typography
+                  onClick={handleRegisterClick}
+                  className={classes.loginOrregister}
+                >
+                  Register
+                </Typography>
+              ) : (
+                <Typography
+                  onClick={handleLoginClick}
+                  className={classes.loginOrregister}
+                >
+                  Login
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </HideOn>
@@ -123,7 +146,7 @@ const NavBar = () => {
               BSU KARS
             </Typography>
           </Box>
-          <NavMenu />
+          <NavMenu user={user} handleLogout={handleLogout} />
           <IconButton
             size="large"
             id="nav-menu"
@@ -133,9 +156,15 @@ const NavBar = () => {
             <MenuIcon />
           </IconButton>
         </Toolbar>
-        {openMenu && ismobile ? <MiniNavMenu /> : <></>}
+        {openMenu && ismobile && (
+          <MiniNavMenu user={user} handleLogout={handleLogout} />
+        )}
       </AppBar>
       <AppBarOffset />
+      {openLogin && <Login open={openLogin} handleClick={handleLoginClick} />}
+      {openRegister && (
+        <Register open={openRegister} handleClick={handleRegisterClick} />
+      )}
     </div>
   );
 };

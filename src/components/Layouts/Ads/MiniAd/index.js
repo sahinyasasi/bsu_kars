@@ -1,20 +1,20 @@
 import React from "react";
 
 import {
-  makeStyles,
   Card,
   CardActions,
   CardMedia,
   Typography,
   Divider,
   Grid,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import IconButton from "../../IconButton";
 import Button from "../../Button";
 import Link from "../../Link";
 import Label from "../../Label";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {

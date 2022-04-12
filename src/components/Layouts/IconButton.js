@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton as MUIconButton } from "@material-ui/core";
+import { IconButton as MUIconButton } from "@mui/material";
 
 const IconButton = ({ children, ...props }) => {
   return (

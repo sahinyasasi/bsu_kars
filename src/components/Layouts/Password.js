@@ -5,8 +5,8 @@ import {
   OutlinedInput,
   IconButton,
   InputAdornment,
-} from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const PassWord = (props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +40,7 @@ const PassWord = (props) => {
             </IconButton>
           </InputAdornment>
         }
-        labelWidth={70}
+        {...props}
       />
     </FormControl>
   );

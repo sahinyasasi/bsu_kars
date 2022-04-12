@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.orange.main,
   },
 }));
-const MiniNavMenu = () => {
+const MiniNavMenu = ({ user, handleLogout }) => {
   const classes = useStyles();
   const [anchorAccEl, setAnchorAccEl] = React.useState(null);
   const [anchorPagesEl, setAnchorPagesEl] = React.useState(null);
@@ -97,17 +97,18 @@ const MiniNavMenu = () => {
           About Us
         </MenuItem>
       </Menu>
-      <Typography
-        id="account"
-        aria-haspopup="true"
-        aria-expanded={openAccount ? "true" : undefined}
-        className={clsx(classes.menuList, classes.dropdown)}
-        onClick={handleAccountClick}
-      >
-        Account
-        <KeyboardArrowDownIcon fontSize="small" />
-      </Typography>
-
+      {user.loggedIn && (
+        <Typography
+          id="account"
+          aria-haspopup="true"
+          aria-expanded={openAccount ? "true" : undefined}
+          className={clsx(classes.menuList, classes.dropdown)}
+          onClick={handleAccountClick}
+        >
+          Account
+          <KeyboardArrowDownIcon fontSize="small" />
+        </Typography>
+      )}
       <Menu
         id="account-menu"
         anchorEl={anchorAccEl}
@@ -129,9 +130,7 @@ const MiniNavMenu = () => {
         <MenuItem component={RLink} to="/myaccount">
           My account
         </MenuItem>
-        <MenuItem component={RLink} to="/">
-          Logout
-        </MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>
   );

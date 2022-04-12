@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "20px !important",
   },
 }));
-const NavMenu = () => {
+const NavMenu = ({ user, handleLogout }) => {
   const classes = useStyles();
   const [anchorPageEl, setAnchorPageEl] = React.useState(null);
   const [anchorAccEl, setAnchorAccEl] = React.useState(null);
@@ -89,19 +89,20 @@ const NavMenu = () => {
           About Us
         </MenuItem>
       </Menu>
-      <Button
-        label="Account"
-        variant="text"
-        color="inherit"
-        size="medium"
-        className={classes.button}
-        aria-controls={openAcc ? "account-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={openAcc ? "true" : undefined}
-        onClick={handleAccClick}
-        onMouseOver={handleAccClick}
-      />
-
+      {user.loggedIn && (
+        <Button
+          label="Account"
+          variant="text"
+          color="inherit"
+          size="medium"
+          className={classes.button}
+          aria-controls={openAcc ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={openAcc ? "true" : undefined}
+          onClick={handleAccClick}
+          onMouseOver={handleAccClick}
+        />
+      )}
       <Menu
         id="account-menu"
         MenuListProps={{
@@ -120,9 +121,7 @@ const NavMenu = () => {
         <MenuItem component={RLink} to="/myaccount">
           My account
         </MenuItem>
-        <MenuItem component={RLink} to="/">
-          Logout
-        </MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
   );
